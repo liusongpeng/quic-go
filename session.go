@@ -468,7 +468,7 @@ func (s *session) maybeResetTimer() {
 func (s *session) handleHandshakeComplete() {
 	s.handshakeComplete = true
 	s.handshakeCompleteChan = nil // prevent this case from ever being selected again
-	s.sessionRunner.onHandshakeComplete(s)
+	s.sessionRunner.OnHandshakeComplete(s)
 
 	// The client completes the handshake first (after sending the CFIN).
 	// We need to make sure they learn about the peer completing the handshake,
@@ -823,7 +823,7 @@ func (s *session) handleAckFrame(frame *wire.AckFrame, pn protocol.PacketNumber,
 // closeLocal closes the session and send a CONNECTION_CLOSE containing the error
 func (s *session) closeLocal(e error) {
 	s.closeOnce.Do(func() {
-		s.sessionRunner.retireConnectionID(s.srcConnID)
+		s.sessionRunner.Retire(s.srcConnID)
 		s.closeChan <- closeError{err: e, sendClose: true, remote: false}
 	})
 }
@@ -831,7 +831,7 @@ func (s *session) closeLocal(e error) {
 // destroy closes the session without sending the error on the wire
 func (s *session) destroy(e error) {
 	s.closeOnce.Do(func() {
-		s.sessionRunner.removeConnectionID(s.srcConnID)
+		s.sessionRunner.Remove(s.srcConnID)
 		s.closeChan <- closeError{err: e, sendClose: false, remote: false}
 	})
 }
@@ -846,7 +846,7 @@ func (s *session) closeForRecreating() protocol.PacketNumber {
 
 func (s *session) closeRemote(e error) {
 	s.closeOnce.Do(func() {
-		s.sessionRunner.removeConnectionID(s.srcConnID)
+		s.sessionRunner.Remove(s.srcConnID)
 		s.closeChan <- closeError{err: e, remote: true}
 	})
 }
