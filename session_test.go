@@ -1631,7 +1631,7 @@ var _ = Describe("Client Session", func() {
 				SupportedVersions: []protocol.VersionNumber{sess.version},
 				Parameters: handshake.TransportParameters{
 					OriginalConnectionID: protocol.ConnectionID{0xde, 0xca, 0xfb, 0xad},
-					StatelessResetToken:  []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
+					StatelessResetToken:  &[16]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
 				},
 			}
 			_, err := sess.processTransportParametersForClient(eetp.Marshal())
@@ -1645,7 +1645,7 @@ var _ = Describe("Client Session", func() {
 				SupportedVersions: []protocol.VersionNumber{sess.version},
 				Parameters: handshake.TransportParameters{
 					OriginalConnectionID: protocol.ConnectionID{0xde, 0xca, 0xfb, 0xad},
-					StatelessResetToken:  []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
+					StatelessResetToken:  &[16]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
 				},
 			}
 			_, err := sess.processTransportParametersForClient(eetp.Marshal())
@@ -1657,7 +1657,7 @@ var _ = Describe("Client Session", func() {
 
 			BeforeEach(func() {
 				params = handshake.TransportParameters{
-					StatelessResetToken:  []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
+					StatelessResetToken:  &[16]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
 					OriginalConnectionID: sess.origDestConnID,
 				}
 			})
