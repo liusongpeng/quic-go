@@ -121,7 +121,7 @@ func dialContext(
 	createdPacketConn bool,
 ) (Session, error) {
 	config = populateClientConfig(config, createdPacketConn)
-	packetHandlers, err := getMultiplexer().AddConn(pconn, config.ConnectionIDLength)
+	packetHandlers, err := getMultiplexer().AddConn(pconn, config.ConnectionIDLength, config.StatelessResetKey)
 	if err != nil {
 		return nil, err
 	}
@@ -241,6 +241,7 @@ func populateClientConfig(config *Config, createdPacketConn bool) *Config {
 		MaxIncomingStreams:                    maxIncomingStreams,
 		MaxIncomingUniStreams:                 maxIncomingUniStreams,
 		KeepAlive:                             config.KeepAlive,
+		StatelessResetKey:                     config.StatelessResetKey,
 	}
 }
 
